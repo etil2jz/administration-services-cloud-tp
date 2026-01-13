@@ -1,0 +1,8 @@
+replicas: 3
+appName: "site-traiteur"
+namespace: "prod"
+image:
+  name: "site-traiteur"
+  repository: "gitlab.lab.rioc.fr/BLANCHOT_A/administration-services-cloud-tp"
+  tag: "v1.0.0"
+servicePort: 8000
