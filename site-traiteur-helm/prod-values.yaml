@@ -2,7 +2,7 @@ replicas: 3
 appName: "site-traiteur"
 namespace: "prod"
 image:
-  repository: "etil2jz/site-traiteur"
+  repository: "ghcr.io/etil2jz/administration-services-cloud-tp"
   tag: "prod-latest"
   pullPolicy: Always
 servicePort: 8000
