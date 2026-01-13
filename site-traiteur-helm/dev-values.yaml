@@ -2,7 +2,7 @@ replicas: 3
 appName: "site-traiteur"
 namespace: "dev"
 image:
-  name: "site-traiteur"
-  repository: "gitlab.lab.rioc.fr/BLANCHOT_A/administration-services-cloud-tp"
-  tag: "v1.0.0"
+  repository: "etil2jz/site-traiteur"
+  tag: "dev-latest"
+  pullPolicy: Always
 servicePort: 8001
