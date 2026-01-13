@@ -1,0 +1,55 @@
+name: CI Build & Push (GHCR)
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+env:
+  REGISTRY: ghcr.io
+  # github.repository contient "etil2jz/administration-services-cloud-tp"
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    # Besoin de ces perms :
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      # Pour GHCR, les noms doivent être en minuscules....
+      - name: Minuscule nom image
+        run: |
+          echo "IMAGE_NAME=${IMAGE_NAME,,}" >> $GITHUB_ENV
+
+      # dev-latest vs prod-latest
+      - name: Déterminer le tag
+        id: tagger
+        run: |
+          if [ "${{ github.ref_name }}" == "dev" ]; then
+            echo "DOCKER_TAG=dev-latest" >> $GITHUB_ENV
+          elif [ "${{ github.ref_name }}" == "main" ]; then
+            echo "DOCKER_TAG=prod-latest" >> $GITHUB_ENV
+          fi
+
+      # Cnnexion au registre GitHub
+      - name: Login GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # Build & Push
+      - name: Build et push Docker image
+        uses: docker/build-push-action@v6
+        with:
+          context: ./app
+          push: true
+          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.DOCKER_TAG }}
