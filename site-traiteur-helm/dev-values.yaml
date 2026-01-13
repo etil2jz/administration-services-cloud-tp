@@ -1,4 +1,4 @@
-replicas: 3
+replicas: 1
 appName: "site-traiteur"
 namespace: "dev"
 image:
